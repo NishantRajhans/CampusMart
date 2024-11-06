@@ -33,13 +33,12 @@ export default function LogIn() {
           ConfirmPassword: data.CONFIRMPASSWORD,
         }
       );
-      console.log(response.data.User);
       localStorage.setItem("UserId", response.data.User._id);
       localStorage.setItem("FirstName", response.data.User.FirstName);
       localStorage.setItem("LastName", response.data.User.LastName);
       localStorage.setItem("UserEmail", response.data.User.Email);
       localStorage.setItem("Token", response.data.User.Token);
-      navigate("/Home");
+      navigate("/");
       reset();
     } catch (error) {
       console.error("Error LogIn", error);

@@ -1,12 +1,15 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import NavBar from "../Component/NavBar";
+import { useToast } from "../hooks/use-toast"
 import { Button } from "../components/ui/button";
 const Product = () => {
   const [Product, setProduct] = useState();
   const location = useLocation();
+  const navigate=useNavigate()
+  const { toast } = useToast()
   const Id = location.pathname.split("/")[2];
   const ProductDetail = async () => {
     const product = await axios.get(
@@ -32,8 +35,13 @@ const Product = () => {
         },
       }
     );
+    toast({
+      title: "WishList Response...!",
+      description: `${product.data.message}`,
+    })
   };
   useEffect(() => {
+    if (localStorage.getItem("Token") === null) navigate("/LogIn");
     ProductDetail();
   }, []);
 

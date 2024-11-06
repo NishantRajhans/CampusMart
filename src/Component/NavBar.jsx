@@ -11,11 +11,6 @@ import {
 import { Recycle } from "lucide-react";
 const menuList = [
   {
-    id: 1,
-    name: "Home",
-    path: "/Home",
-  },
-  {
     id: 2,
     name: "AllProducts",
     path: "/AllProducts",
@@ -41,11 +36,16 @@ const NavBar = () => {
   const location = useLocation();
   const Page = location.pathname.split("/")[1];
   const handleLogOut=async()=>{
-    
+    localStorage.removeItem("UserId");
+      localStorage.removeItem("FirstName");
+      localStorage.removeItem("LastName");
+      localStorage.removeItem("UserEmail");
+      localStorage.removeItem("Token");
+      navigate("/LogIn");
   }
   return (
     <div className=" w-full bg-black bg-opacity-50 rounded-md shadow-md text-white flex p-5 justify-between">
-      <div className="flex justify-center items-center">
+      <div className="flex justify-center items-center cursor-pointer" onClick={()=>navigate("/")}>
       <Recycle className=" w-11 h-11" />
       <h1 className="text-2xl font-bold">CampusMart</h1>
       </div>
@@ -77,12 +77,9 @@ const NavBar = () => {
                 <AvatarFallback>CN</AvatarFallback>
               </Avatar>
             </HoverCardTrigger>
-            <HoverCardContent className="w-32 flex-col justify-center items-center ">
-              <div className="w-full cursor-pointer hover:bg-black hover:text-white rounded-sm">
-                <p className=" text-center" onClick={()=>handleLogOut()}>LogOut</p>
-              </div>
-              <div className="w-full cursor-pointer hover:bg-black hover:text-white rounded-sm">
-                <p className=" text-center">Profile</p>
+            <HoverCardContent className="w-32 flex-col justify-center items-center bg-black border-slate-800 ">
+              <div className="w-full cursor-pointer text-white rounded-sm hover:bg-white hover:text-slate-800">
+                <p className=" text-center font-bold" onClick={()=>handleLogOut()}>LogOut</p>
               </div>
             </HoverCardContent>
           </HoverCard>

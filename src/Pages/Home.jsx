@@ -75,7 +75,13 @@ const Home = () => {
     formState: { errors },
   } = useForm();
   const navigate = useNavigate();
-  const submitHandler = async () => {};
+  const submitHandler = async () => {
+    navigate("/LogIn")
+  };
+  const handleClick=async () => {
+    if(localStorage.getItem("Token"))navigate("/AllProducts")
+    else navigate("/LogIn")
+  }
   return (
     <div className="bg-black w-full h-full min-h-screen">
         <div className="sticky top-0 z-50 bg-black bg-opacity-70">
@@ -93,7 +99,7 @@ const Home = () => {
               destination for finding affordable, high-quality used products
               tailored to your college needs.
             </p>
-            <Button className="w-40">Learn</Button>
+            <Button className="w-40" onClick={()=>handleClick()}>Start</Button>
           </div>
         </div>
         <div className=""></div>

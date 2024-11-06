@@ -1,18 +1,9 @@
 import React from "react";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 import NavBar from "../Component/NavBar";
 import { Button } from "../components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "../components/ui/dialog";
+import { useToast } from "../hooks/use-toast"
 import {
   AlertDialog,
   AlertDialogAction,
@@ -24,13 +15,11 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "../components/ui/alert-dialog";
-import { Input } from "../components/ui/input";
-import { Label } from "../components/ui/label";
-import { useForm } from "react-hook-form";
-
+import { useNavigate } from "react-router-dom";
 const WishList = () => {
   const [WishList, setWishList] = useState([]);
-  const navigate = useNavigate();
+  const navigate=useNavigate();
+  const { toast } = useToast()
   const WishListCall = async () => {
     const WishListData = await axios.get(
       "http://localhost:4000/api/v1/User/GetAllWishListProducts",
@@ -51,9 +40,14 @@ const WishList = () => {
         },
       }
     );
+    toast({
+      title: "WishList Response...!",
+      description: `${WishListData.data.message}`,
+    })
     WishListCall();
   };
   useEffect(() => {
+    if (localStorage.getItem("Token") === null) navigate("/LogIn");
     WishListCall();
   }, []);
   return (
@@ -62,7 +56,7 @@ const WishList = () => {
         <NavBar />
       </div>
       <div className="space-y-3">
-        {WishList.map((product)=>{
+        {WishList?.map((product)=>{
           return (
             <div
               key={product._id}

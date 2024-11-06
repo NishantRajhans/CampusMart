@@ -12,7 +12,7 @@ import MyProduct from "./Pages/MyProduct";
 function App() {
   return (
     <Routes>
-      <Route path="/Home" element={<Home />} />
+      <Route path="/" element={<Home />} />
       <Route path="/LogIn" element={<Login />} />
       <Route path="/SignUp" element={<Signup />} />
       <Route path="/AllProducts" element={<AllProduct/>} />

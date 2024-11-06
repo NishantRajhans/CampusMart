@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "../components/ui/button";
 import NavBar from "../Component/NavBar";
 import { Textarea } from "../components/ui/textarea";
@@ -21,6 +21,7 @@ import { Label } from "../components/ui/label";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useToast } from "../hooks/use-toast";
 
 const CreateProduct = () => {
   const {
@@ -30,6 +31,7 @@ const CreateProduct = () => {
     formState: { errors },
   } = useForm();
   const [file, setFile] = useState(null);
+  const { toast } = useToast()
   const [selectedCategory, setSelectedCategory] = useState("Other"); // Default value
   const navigate = useNavigate();
 
@@ -59,20 +61,25 @@ const CreateProduct = () => {
             },
           }
         );
-
-        console.log(response);
+        toast({
+          title: "Product Response...!",
+          description: `${response.data.message}`,
+        })
         reset();
       } catch (err) {
         console.error("Error in Fetching data:", err);
       }
     }
   };
+  useEffect(()=>{
+    if (localStorage.getItem("Token") === null) navigate("/LogIn");
+  },[])
   return (
     <div className="bg-black h-screen">
       <div className="sticky top-0 z-50 bg-black bg-opacity-70">
         <NavBar />
       </div>
-      <Card className="w-[70%] bg-neutral-900 border border-neutral-800 mx-auto">
+      <Card className="w-[70%] bg-black border border-slate-800 mx-auto">
         <CardHeader>
           <CardTitle className="mx-auto font-bold text-white text-3xl">
             Create Product
@@ -156,7 +163,7 @@ const CreateProduct = () => {
               </div>
               <div className="flex justify-end">
                 <Button
-                  className="font-bold hover:text-white mt-5"
+                  className="mt-5"
                   type="submit"
                 >
                   Create Product

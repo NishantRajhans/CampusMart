@@ -14,32 +14,79 @@ import {
 } from "../components/ui/card";
 const AllProduct = () => {
   const [Product, setProduct] = useState([]);
+  const [currButton, setCurrButton] = useState("AllProducts");
   const navigate = useNavigate();
-  const ProductData = async () => {
-    const Productdata = await axios.get(
-      "http://localhost:4000/api/v1/Product/GetAllProducts",
-      {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${localStorage.getItem("Token")}`,
-        },
+  const ProductData = async (value) => {
+    try {
+      if (value == "AllProducts") {
+        const Productdata = await axios.get(
+          "http://localhost:4000/api/v1/Product/GetAllProducts",
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+              Authorization: `Bearer ${localStorage.getItem("Token")}`,
+            },
+          }
+        );
+        setProduct(Productdata.data.Products);
+      } else {
+        const Productdata = await axios.get(
+          `http://localhost:4000/api/v1/Product/GetProductsByCategory/${value}`,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+              Authorization: `Bearer ${localStorage.getItem("Token")}`,
+            },
+          }
+        );
+        console.log(Productdata)
+        setProduct(Productdata.data.Product);
       }
-    );
-    setProduct(Productdata.data.Products);
+    } catch (err) {
+      console.error("error in Allproducts"+err);
+    }
   };
   useEffect(() => {
     if (localStorage.getItem("Token") === null) navigate("/LogIn");
-    ProductData();
-  }, []);
+    ProductData(currButton);
+  }, [, currButton]);
   return (
     <div className="bg-black w-full h-full min-h-screen">
       <div className="sticky top-0 z-50 bg-black bg-opacity-70">
         <NavBar />
       </div>
       <div className="flex gap-11 mt-10 items-center justify-center">
-        <Button>AllProducts</Button>
-        <Button>Calculator</Button>
-        <Button>Uniform</Button>
+        <Button
+          className={`${
+            currButton == "AllProducts" ? "text-white" : "text-black"
+          }`}
+          onClick={() => {
+            setCurrButton("AllProducts");
+            ProductData("AllProducts");
+          }}
+        >
+          AllProducts
+        </Button>
+        <Button
+          className={`${
+            currButton == "Calculator" ? "text-white" : "text-black"
+          }`}
+          onClick={() => {
+            setCurrButton("Calculator");
+            ProductData("Calculator");
+          }}
+        >
+          Calculator
+        </Button>
+        <Button
+          className={`${currButton == "Uniform" ? "text-white" : "text-black"}`}
+          onClick={() => {
+            setCurrButton("Uniform");
+            ProductData("Uniform");
+          }}
+        >
+          Uniform
+        </Button>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-6 mx-auto">
         {Product?.map((product) => (
