@@ -27,7 +27,7 @@ import {
 import { Input } from "../components/ui/input";
 import { Label } from "../components/ui/label";
 import { useForm } from "react-hook-form";
-import { useToast } from "../hooks/use-toast";
+import { toast } from "react-toastify";
 
 const MyProduct = () => {
   const {
@@ -40,10 +40,8 @@ const MyProduct = () => {
   const [open, setOpen] = useState(false);
   const [productId,setProductId]=useState(null);
   const navigate=useNavigate()
-  const { toast } = useToast();
-
   const ProductCall = async () => {
-    const ProductData = await axios.get(
+    const response = await axios.get(
       "http://localhost:4000/api/v1/Product/GetMyProducts",
       {
         headers: {
@@ -51,7 +49,12 @@ const MyProduct = () => {
         },
       }
     );
-    setProduct(ProductData?.data?.Products);
+    if(response.data.message=="Get My Product Successfully"){
+      toast.success(response.data.message)
+      setProduct(response?.data?.Products);
+    }else{
+      toast.error(response.data.message)
+    }
   };
 
   const handleclick = async (id) => {
@@ -63,11 +66,12 @@ const MyProduct = () => {
         },
       }
     );
-    toast({
-      title: "Product Response...!",
-      description: `${response.data.message}`,
-    });
-    ProductCall();
+    if(response.data.message=="Product Delete Successfully"){
+      toast.success(response.data.message)
+      ProductCall();
+    }else{
+      toast.error(response.data.message)
+    }
   };
 
   const submitHandler = async (data) => {
@@ -83,12 +87,17 @@ const MyProduct = () => {
           Authorization: `Bearer ${localStorage.getItem("Token")}`,
         },
       })
-      console.log(response)
-      reset();
-      ProductCall();
-      setOpen(false);
+      if(response.data.message=="Product Edited Successfully"){
+        toast.success(response.data.message)
+        reset();
+        ProductCall();
+        setOpen(false);
+      }else{
+        toast.error(response.data.message)
+        reset();
+      }
     } catch (err) {
-      console.error("Error SignUp:", err);
+      toast.error("Error In Edit Product");
     }
   };
   useEffect(() => {

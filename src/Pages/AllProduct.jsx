@@ -12,6 +12,7 @@ import {
   CardHeader,
   CardTitle,
 } from "../components/ui/card";
+import { toast } from "react-toastify";
 const AllProduct = () => {
   const [Product, setProduct] = useState([]);
   const [currButton, setCurrButton] = useState("AllProducts");
@@ -19,7 +20,7 @@ const AllProduct = () => {
   const ProductData = async (value) => {
     try {
       if (value == "AllProducts") {
-        const Productdata = await axios.get(
+        const response = await axios.get(
           "http://localhost:4000/api/v1/Product/GetAllProducts",
           {
             headers: {
@@ -28,9 +29,14 @@ const AllProduct = () => {
             },
           }
         );
-        setProduct(Productdata.data.Products);
+        if(response.data.message=="Get All Products Successfully"){
+          toast.success(response.data.message)
+          setProduct(response.data.Products);
+        }else{
+          toast.error(response.data.message)
+        }
       } else {
-        const Productdata = await axios.get(
+        const response = await axios.get(
           `http://localhost:4000/api/v1/Product/GetProductsByCategory/${value}`,
           {
             headers: {
@@ -39,8 +45,12 @@ const AllProduct = () => {
             },
           }
         );
-        console.log(Productdata)
-        setProduct(Productdata.data.Product);
+        if(response.data.message=="Get Products Successfully"){
+          toast.success(`Get ${value} Successfully`)
+          setProduct(response.data.Product);
+        }else{
+          toast.error(response.data.message)
+        }
       }
     } catch (err) {
       console.error("error in Allproducts"+err);
@@ -49,7 +59,7 @@ const AllProduct = () => {
   useEffect(() => {
     if (localStorage.getItem("Token") === null) navigate("/LogIn");
     ProductData(currButton);
-  }, [, currButton]);
+  }, [currButton]);
   return (
     <div className="bg-black w-full h-full min-h-screen">
       <div className="sticky top-0 z-50 bg-black bg-opacity-70">
@@ -57,33 +67,20 @@ const AllProduct = () => {
       </div>
       <div className="flex gap-11 mt-10 items-center justify-center">
         <Button
-          className={`${
-            currButton == "AllProducts" ? "text-white" : "text-black"
-          }`}
-          onClick={() => {
-            setCurrButton("AllProducts");
-            ProductData("AllProducts");
-          }}
+          className={`${currButton === "AllProducts" ? "text-white" : "text-black"}`}
+          onClick={() => setCurrButton("AllProducts")}        
         >
           AllProducts
         </Button>
         <Button
-          className={`${
-            currButton == "Calculator" ? "text-white" : "text-black"
-          }`}
-          onClick={() => {
-            setCurrButton("Calculator");
-            ProductData("Calculator");
-          }}
+          className={`${currButton === "Calculator" ? "text-white" : "text-black"}`}
+          onClick={() => setCurrButton("Calculator")}
         >
           Calculator
         </Button>
         <Button
-          className={`${currButton == "Uniform" ? "text-white" : "text-black"}`}
-          onClick={() => {
-            setCurrButton("Uniform");
-            ProductData("Uniform");
-          }}
+          className={`${currButton === "Uniform" ? "text-white" : "text-black"}`}
+          onClick={() => setCurrButton("Uniform")}
         >
           Uniform
         </Button>

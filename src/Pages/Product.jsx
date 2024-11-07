@@ -3,16 +3,15 @@ import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import NavBar from "../Component/NavBar";
-import { useToast } from "../hooks/use-toast"
 import { Button } from "../components/ui/button";
+import { toast } from "react-toastify";
 const Product = () => {
   const [Product, setProduct] = useState();
   const location = useLocation();
   const navigate=useNavigate()
-  const { toast } = useToast()
   const Id = location.pathname.split("/")[2];
   const ProductDetail = async () => {
-    const product = await axios.get(
+    const response = await axios.get(
       `http://localhost:4000/api/v1/Product/GetProduct/${Id}`,
       {
         headers: {
@@ -20,11 +19,16 @@ const Product = () => {
         },
       }
     );
-    setProduct(product.data.Product);
+    if(response.data.message=="Get Product Successfully"){
+      toast.success(response.data.message)
+      setProduct(response.data.Product);
+    }else{
+      toast.error(response.data.message)
+    }
   };
   const handleClick = async () => {
     const Id = location.pathname.split("/")[2];
-    const product = await axios.put(
+    const response = await axios.put(
       `http://localhost:4000/api/v1/User/AddToWishList`,
       {
         ProductId: Id,
@@ -35,10 +39,11 @@ const Product = () => {
         },
       }
     );
-    toast({
-      title: "WishList Response...!",
-      description: `${product.data.message}`,
-    })
+    if(response.data.message=="Product Successfully Added To WishList"){
+      toast.success(response.data.message)
+    }else{
+      toast.error(response.data.message)
+    }
   };
   useEffect(() => {
     if (localStorage.getItem("Token") === null) navigate("/LogIn");

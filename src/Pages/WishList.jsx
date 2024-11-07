@@ -15,13 +15,13 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "../components/ui/alert-dialog";
+import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 const WishList = () => {
   const [WishList, setWishList] = useState([]);
   const navigate=useNavigate();
-  const { toast } = useToast()
   const WishListCall = async () => {
-    const WishListData = await axios.get(
+    const response = await axios.get(
       "http://localhost:4000/api/v1/User/GetAllWishListProducts",
       {
         headers: {
@@ -29,10 +29,15 @@ const WishList = () => {
         },
       }
     );
-    setWishList(WishListData?.data?.User[0]?.WishList);
+    if(response.data.message=="WishList fetch successfully"){
+      toast.success(response.data.message)
+      setWishList(response?.data?.User[0]?.WishList);
+    }else{
+      toast.error(response.data.message)
+    }
   };
   const handleclick = async (id) => {
-    const WishListData = await axios.delete(
+    const response = await axios.delete(
       `http://localhost:4000/api/v1/User/RemoveFromWishList/${id}`,
       {
         headers: {
@@ -40,11 +45,12 @@ const WishList = () => {
         },
       }
     );
-    toast({
-      title: "WishList Response...!",
-      description: `${WishListData.data.message}`,
-    })
-    WishListCall();
+    if(response.data.message=="Product Successfully Remove From WishList"){
+      toast.success(response.data.message)
+      WishListCall();
+    }else{
+      toast.error(response.data.message)
+    }
   };
   useEffect(() => {
     if (localStorage.getItem("Token") === null) navigate("/LogIn");

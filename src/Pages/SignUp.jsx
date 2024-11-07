@@ -14,6 +14,7 @@ import { Label } from "../components/ui/label";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 export default function Signup() {
     const {
         register,
@@ -25,7 +26,7 @@ export default function Signup() {
       const navigate=useNavigate();
   const submitHandler = async (data) => {
     try {
-      const signupdata = await axios.post(
+      const response = await axios.post(
         "http://localhost:4000/api/v1/Auth/SignUp",
         {
           FirstName: data.FIRSTNAME,
@@ -41,11 +42,18 @@ export default function Signup() {
           }
         }
       );
-      navigate("/LogIn")
-      reset();
-      if (signupdata.data.message !== "User already exists") navigate("/LogIn");
+      if (response.data.message !== "User already exists") navigate("/LogIn");
+      if(response.data.message=="Email send Successfully"){
+        toast.success("Email send Successfully..!!")
+        navigate("/LogIn")
+        reset();
+      }
+      else{
+        toast.error(response.data.message)
+        reset();
+      }
     } catch (err) {
-      console.error("Error SignUp:", err);
+      toast.error("Error In SignUp");
     }
   };
   return (

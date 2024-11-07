@@ -9,6 +9,7 @@ import {
   HoverCardTrigger,
 } from "../components/ui/hover-card";
 import { Recycle } from "lucide-react";
+import { toast } from "react-toastify";
 const menuList = [
   {
     id: 2,
@@ -36,6 +37,7 @@ const NavBar = () => {
   const location = useLocation();
   const Page = location.pathname.split("/")[1];
   const handleLogOut=async()=>{
+    toast.success("User Logged Out Successfully");
     localStorage.removeItem("UserId");
       localStorage.removeItem("FirstName");
       localStorage.removeItem("LastName");

@@ -21,8 +21,7 @@ import { Label } from "../components/ui/label";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { useToast } from "../hooks/use-toast";
-
+import { toast } from "react-toastify";
 const CreateProduct = () => {
   const {
     register,
@@ -31,7 +30,6 @@ const CreateProduct = () => {
     formState: { errors },
   } = useForm();
   const [file, setFile] = useState(null);
-  const { toast } = useToast()
   const [selectedCategory, setSelectedCategory] = useState("Other"); // Default value
   const navigate = useNavigate();
 
@@ -61,13 +59,14 @@ const CreateProduct = () => {
             },
           }
         );
-        toast({
-          title: "Product Response...!",
-          description: `${response.data.message}`,
-        })
-        reset();
+        if(response.data.message=="Product Create Successfully"){
+          toast.success(response.data.message)
+          reset();
+        }else{
+          toast.error(response.data.message)
+        }
       } catch (err) {
-        console.error("Error in Fetching data:", err);
+        toast.error("Error in Creating Product");
       }
     }
   };
