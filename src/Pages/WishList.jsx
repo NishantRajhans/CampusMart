@@ -22,7 +22,7 @@ const WishList = () => {
   const navigate=useNavigate();
   const WishListCall = async () => {
     const response = await axios.get(
-      "http://localhost:4000/api/v1/User/GetAllWishListProducts",
+      "https://campusmart-backend.onrender.com/api/v1/User/GetAllWishListProducts",
       {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("Token")}`,
@@ -38,7 +38,7 @@ const WishList = () => {
   };
   const handleclick = async (id) => {
     const response = await axios.delete(
-      `http://localhost:4000/api/v1/User/RemoveFromWishList/${id}`,
+      `https://campusmart-backend.onrender.com/api/v1/User/RemoveFromWishList/${id}`,
       {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("Token")}`,

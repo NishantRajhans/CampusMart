@@ -12,7 +12,7 @@ const Product = () => {
   const Id = location.pathname.split("/")[2];
   const ProductDetail = async () => {
     const response = await axios.get(
-      `http://localhost:4000/api/v1/Product/GetProduct/${Id}`,
+      `https://campusmart-backend.onrender.com/api/v1/Product/GetProduct/${Id}`,
       {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("Token")}`,
@@ -29,7 +29,7 @@ const Product = () => {
   const handleClick = async () => {
     const Id = location.pathname.split("/")[2];
     const response = await axios.put(
-      `http://localhost:4000/api/v1/User/AddToWishList`,
+      `https://campusmart-backend.onrender.com/api/v1/User/AddToWishList`,
       {
         ProductId: Id,
       },

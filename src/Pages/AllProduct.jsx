@@ -21,7 +21,7 @@ const AllProduct = () => {
     try {
       if (value == "AllProducts") {
         const response = await axios.get(
-          "http://localhost:4000/api/v1/Product/GetAllProducts",
+          "https://campusmart-backend.onrender.com/api/v1/Product/GetAllProducts",
           {
             headers: {
               "Content-Type": "multipart/form-data",
@@ -37,7 +37,7 @@ const AllProduct = () => {
         }
       } else {
         const response = await axios.get(
-          `http://localhost:4000/api/v1/Product/GetProductsByCategory/${value}`,
+          `https://campusmart-backend.onrender.com/api/v1/Product/GetProductsByCategory/${value}`,
           {
             headers: {
               "Content-Type": "multipart/form-data",

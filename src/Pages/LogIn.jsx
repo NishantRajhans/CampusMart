@@ -27,7 +27,7 @@ export default function LogIn() {
   const submitHandler = async (data) => {
     try {
       const response = await axios.post(
-        `http://localhost:4000/api/v1/Auth/LogIn`,
+        `https://campusmart-backend.onrender.com/api/v1/Auth/LogIn`,
         {
           Email: data.EMAIL,
           Password: data.PASSWORD,

@@ -42,7 +42,7 @@ const MyProduct = () => {
   const navigate=useNavigate()
   const ProductCall = async () => {
     const response = await axios.get(
-      "http://localhost:4000/api/v1/Product/GetMyProducts",
+      "https://campusmart-backend.onrender.com/api/v1/Product/GetMyProducts",
       {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("Token")}`,
@@ -59,7 +59,7 @@ const MyProduct = () => {
 
   const handleclick = async (id) => {
     const response = await axios.delete(
-      `http://localhost:4000/api/v1/Product/DeletProduct/${id}`,
+      `https://campusmart-backend.onrender.com/api/v1/Product/DeletProduct/${id}`,
       {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("Token")}`,
@@ -76,7 +76,7 @@ const MyProduct = () => {
 
   const submitHandler = async (data) => {
     try {
-      const response=await axios.put(`http://localhost:4000/api/v1/Product/EditProduct/${productId}`,{
+      const response=await axios.put(`https://campusmart-backend.onrender.com/api/v1/Product/EditProduct/${productId}`,{
         ProductDescription:data.description,
         ProductPrice:data.price,
         ProductTitle:data.title,

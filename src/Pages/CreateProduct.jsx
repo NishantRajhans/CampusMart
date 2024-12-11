@@ -50,7 +50,7 @@ const CreateProduct = () => {
         formData.append("ProductImage", file);
 
         const response = await axios.post(
-          "http://localhost:4000/api/v1/Product/CreateProduct",
+          "https://campusmart-backend.onrender.com/api/v1/Product/CreateProduct",
           formData,
           {
             headers: {

@@ -27,7 +27,7 @@ export default function Signup() {
   const submitHandler = async (data) => {
     try {
       const response = await axios.post(
-        "http://localhost:4000/api/v1/Auth/SignUp",
+        "https://campusmart-backend.onrender.com/api/v1/Auth/SignUp",
         {
           FirstName: data.FIRSTNAME,
           LastName: data.LASTNAME,
