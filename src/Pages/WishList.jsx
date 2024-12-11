@@ -79,7 +79,7 @@ const WishList = () => {
                 <p className="text-white font-bold text-lg">
                   {product.ProductTitle}
                 </p>
-                <p className="text-white">{product.ProductDescription}</p>
+                <p className="text-white">{product.ProductDescription.length()>200?product.ProductDescription.substring(0,200)+"...":product.ProductDescription}</p>
                 <p className="text-white font-bold">
                   {product.ProductPrice + " $"}
                 </p>
